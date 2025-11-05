@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Linked List DSA - English & বাংলা</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet"/>
+    <!-- Animate.css for Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --primary: #007bff;
+            --navbar-bg: #343a40;
+            --search-bg: #495057;
+            --border-color: #dee2e6;
+        }
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --primary: #0d6efd;
+            --navbar-bg: #1f1f1f;
+            --search-bg: #2c2c2c;
+            --border-color: #333;
+        }
+        [data-theme="red"] {
+            --bg-color: #2b0b0b;
+            --text-color: #ffcccc;
+            --card-bg: #3d0f0f;
+            --primary: #ff4d4d;
+            --navbar-bg: #4d0000;
+            --search-bg: #660000;
+            --border-color: #990000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        .bangla {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--navbar-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 1rem;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--search-bg);
+            color: white;
+            font-size: 1rem;
+        }
+        .search-container input::placeholder {
+            color: #ccc;
+        }
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, var(--primary), #0056b3);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Section Cards */
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--primary);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Code Block */
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Animation Container */
+        .animation-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .node {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 0 8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            position: relative;
+            min-width: 60px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .arrow {
+            display: inline-block;
+            font-size: 1.5rem;
+            margin: 0 5px;
+            color: var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* 3D Node (CSS 3D) */
+        .node-3d {
+            perspective: 1000px;
+            display: inline-block;
+            margin: 10px;
+        }
+        .node-3d .card {
+            width: 100px;
+            height: 60px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .node-3d:hover .card {
+            transform: rotateY(180deg);
+        }
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        .front {
+            background: var(--primary);
+            color: white;
+        }
+        .back {
+            background: #dc3545;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Video Embed */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .navbar { flex-direction: column; gap: 1rem; }
+            .search-container { max-width: 100%; }
+        }
+
+        /* Highlight Search */
+        .highlight {
+            background-color: yellow;
+            color: black;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">🔗 LinkedList DSA</div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search topics, code, or explanations..." />
+        </div>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" title="Change Theme">
+                <i class="fas fa-palette"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Hero -->
+        <section class="hero animate__animated animate__fadeIn">
+            <h1>Linked List in Data Structures</h1>
+            <p>Complete Guide with <strong>English</strong> & <strong class="bangla">বাংলা</strong> Explanations, Animations, Code & 3D Visuals</p>
+        </section>
+
+        <!-- What is Linked List -->
+        <section class="section" id="intro">
+            <h2><i class="fas fa-info-circle"></i> What is a Linked List?</h2>
+            <div class="grid">
+                <div>
+                    <h3>English Explanation</h3>
+                    <p>A <strong>Linked List</strong> is a linear data structure where elements are not stored in contiguous memory locations. Each element (called a <strong>node</strong>) contains:</p>
+                    <ul>
+                        <li><strong>Data</strong>: The value</li>
+                        <li><strong>Next Pointer</strong>: Reference to the next node</li>
+                    </ul>
+                    <p>Unlike arrays, linked lists allow <strong>dynamic size</strong> and efficient insertion/deletion.</p>
+                </div>
+                <div>
+                    <h3 class="bangla">বাংলা ব্যাখ্যা</h3>
+                    <p class="bangla">একটি <strong>লিঙ্কড লিস্ট</strong> হলো এমন একটি লিনিয়ার ডেটা স্ট্রাকচার যেখানে উপাদানগুলো একটানা মেমরিতে সংরক্ষিত থাকে না। প্রতিটি উপাদানকে (<strong>নোড</strong> বলা হয়) দুটি অংশ থাকে:</p>
+                    <ul class="bangla">
+                        <li><strong>ডেটা</strong>: মান</li>
+                        <li><strong>পরবর্তী পয়েন্টার</strong>: পরের নোডের রেফারেন্স</li>
+                    </ul>
+                    <p class="bangla">অ্যারের বিপরীতে, লিঙ্কড লিস্ট <strong>ডাইনামিক সাইজ</strong> এবং দ্রুত ইনসারশন/ডিলিশন সমর্থন করে।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Types -->
+        <section class="section" id="types">
+            <h2><i class="fas fa-sitemap"></i> Types of Linked Lists</h2>
+            <div class="grid">
+                <div>
+                    <h3>1. Singly Linked List</h3>
+                    <p>Each node points to the next node only.</p>
+                </div>
+                <div>
+                    <h3 class="bangla">১. সিঙ্গলি লিঙ্কড লিস্ট</h3>
+                    <p class="bangla">প্রতিটি নোড শুধু পরের নোডের দিকে পয়েন্ট করে।</p>
+                </div>
+                <div>
+                    <h3>2. Doubly Linked List</h3>
+                    <p>Each node has pointers to both next and previous nodes.</p>
+                </div>
+                <div>
+                    <h3 class="bangla">২. ডাবলি লিঙ্কড লিস্ট</h3>
+                    <p class="bangla">প্রতিটি নোডে পরের এবং আগের নোডের পয়েন্টার থাকে।</p>
+                </div>
+                <div>
+                    <h3>3. Circular Linked List</h3>
+                    <p>Last node points back to the first node.</p>
+                </div>
+                <div>
+                    <h3 class="bangla">৩. সার্কুলার লিঙ্কড লিস্ট</h3>
+                    <p class="bangla">শেষ নোড প্রথম নোডের দিকে পয়েন্ট করে।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visual Animation -->
+        <section class="section" id="animation">
+            <h2><i class="fas fa-play-circle"></i> Visual Animation</h2>
+            <div class="animation-container">
+                <h3>Singly Linked List Insertion</h3>
+                <div id="linkedListAnim">
+                    <div class="node">10</div>
+                    <div class="arrow">→</div>
+                    <div class="node">20</div>
+                    <div class="arrow">→</div>
+                    <div class="node">30</div>
+                    <div class="arrow">→</div>
+                    <div class="node">NULL</div>
+                </div>
+                <button onclick="insertNode()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer;">
+                    Insert 40 at End
+                </button>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <h3>3D Node Flip Animation</h3>
+                <div style="text-align:center;">
+                    <div class="node-3d">
+                        <div class="card">
+                            <div class="face front">Data: 50</div>
+                            <div class="face back">Next →</div>
+                        </div>
+                    </div>
+                    <div class="node-3d">
+                        <div class="card">
+                            <div class="face front">Data: 60</div>
+                            <div class="face back">Next →</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Section -->
+        <section class="section" id="code">
+            <h2><i class="fas fa-code"></i> Implementation in C++</h2>
+
+            <h3>Node Structure</h3>
+            <pre><code id="code1">// Node Definition
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};</code><button class="copy-btn" onclick="copyCode('code1')">Copy</button></pre>
+
+            <h3>Insert at End</h3>
+            <pre><code id="code2">void insertAtEnd(Node*& head, int val) {
+    Node* newNode = new Node(val);
+    if (!head) {
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}</code><button class="copy-btn" onclick="copyCode('code2')">Copy</button></pre>
+
+            <h3>Display List</h3>
+            <pre><code id="code3">void display(Node* head) {
+    Node* temp = head;
+    while (temp) {
+        cout << temp->data;
+        if (temp->next) cout << " -> ";
+        temp = temp->next;
+    }
+    cout << " -> NULL" << endl;
+}</code><button class="copy-btn" onclick="copyCode('code3')">Copy</button></pre>
+
+            <h3>Full Program</h3>
+            <pre><code id="code4">#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+void insertAtEnd(Node*& head, int val) { ... } // as above
+void display(Node* head) { ... } // as above
+
+int main() {
+    Node* head = nullptr;
+    insertAtEnd(head, 10);
+    insertAtEnd(head, 20);
+    insertAtEnd(head, 30);
+    display(head);
+    return 0;
+}</code><button class="copy-btn" onclick="copyCode('code4')">Copy</button></pre>
+        </section>
+
+        <!-- Video Explanation -->
+        <section class="section" id="video">
+            <h2><i class="fas fa-video"></i> Video Explanation</h2>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/354zikT5_4U" allowfullscreen></iframe>
+            </div>
+            <p style="margin-top:1rem;text-align:center;">
+                <em>Visual Explanation of Linked List Operations (by freeCodeCamp)</em>
+            </p>
+        </section>
+
+        <!-- Advantages & Disadvantages -->
+        <section class="section" id="pros-cons">
+            <h2><i class="fas fa-balance-scale"></i> Advantages & Disadvantages</h2>
+            <div class="grid">
+                <div>
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li>Dynamic size</li>
+                        <li>Efficient insertion/deletion</li>
+                        <li>No memory wastage</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="bangla">সুবিধা</h3>
+                    <ul class="bangla">
+                        <li>ডাইনামিক সাইজ</li>
+                        <li>দ্রুত ইনসারশন/ডিলিশন</li>
+                        <li>মেমরি অপচয় নেই</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Disadvantages</h3>
+                    <ul>
+                        <li>No random access</li>
+                        <li>Extra memory for pointers</li>
+                        <li>Slower search (O(n))</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="bangla">অসুবিধা</h3>
+                    <ul class="bangla">
+                        <li>র‍্যান্ডম অ্যাক্সেস নেই</li>
+                        <li>পয়েন্টারের জন্য অতিরিক্ত মেমরি</li>
+                        <li>ধীর সার্চ (O(n))</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Theme Toggle: Light → Dark → Red → Light
+        const themes = ['light', 'dark', 'red'];
+        let currentTheme = 0;
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = (currentTheme + 1) % themes.length;
+            body.setAttribute('data-theme', themes[currentTheme]);
+            localStorage.setItem('theme', themes[currentTheme]);
+        });
+
+        // Load saved theme
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('theme');
+            if (saved && themes.includes(saved)) {
+                body.setAttribute('data-theme', saved);
+                currentTheme = themes.indexOf(saved);
+            }
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            document.querySelectorAll('p, li, h1, h2, h3, pre, code').forEach(el => {
+                const text = el.textContent.toLowerCase();
+                el.innerHTML = el.innerHTML.replace(/<span class="highlight">/g, '').replace(/<\/span>/g, '');
+                if (term && text.includes(term)) {
+                    const regex = new RegExp(term, 'gi');
+                    el.innerHTML = el.innerHTML.replace(regex, match => `<span class="highlight">${match}</span>`);
+                }
+            });
+        });
+
+        // Copy Code
+        function copyCode(id) {
+            const code = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Simple Animation: Insert Node
+        function insertNode() {
+            const container = document.getElementById('linkedListAnim');
+            const newNode = document.createElement('div');
+            newNode.className = 'node animate__animated animate__fadeIn';
+            newNode.textContent = '40';
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow';
+            arrow.textContent = '→';
+            const nullNode = container.lastElementChild;
+            container.insertBefore(arrow, nullNode);
+            container.insertBefore(newNode, nullNode);
+        }
+    </script>
+
+    <!-- Animate on Scroll -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                    }
+                });
+            });
+            document.querySelectorAll('.section').forEach(sec => {
+                observer.observe(sec);
+            });
+        });
+    </script>
+
+</body>
+</html>
